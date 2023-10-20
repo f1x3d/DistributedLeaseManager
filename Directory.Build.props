@@ -1,0 +1,36 @@
+<Project>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<LangVersion>latest</LangVersion>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<PackageId>$(AssemblyName)</PackageId>
+		<PackageTags>distributed lease lock manager dlm concurrency aspnet</PackageTags>
+
+		<Version>1.0.0</Version>
+		<PackageValidationBaselineVersion>1.0.0</PackageValidationBaselineVersion>
+		<EnablePackageValidation Condition="'$(Version)' != '$(PackageValidationBaselineVersion)'">true</EnablePackageValidation>
+
+		<Authors>Oleksandr Manyk</Authors>
+		<PackageProjectUrl>https://github.com/f1x3d/DistributedLeaseManager</PackageProjectUrl>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="DotNet.ReproducibleBuilds" Version="1.1.1">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup Condition="$(ProjectName) != '_misc'">
+		<None Include="$(MSBuildThisFileDirectory)\LICENSE" Pack="true" PackagePath="" Visible="false" />
+		<None Include="$(MSBuildThisFileDirectory)\$(ProjectName)\README.md" Pack="true" PackagePath="" Visible="true" />
+	</ItemGroup>
+</Project>

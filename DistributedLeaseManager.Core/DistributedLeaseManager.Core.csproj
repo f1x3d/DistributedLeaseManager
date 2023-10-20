@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>Core files of the simple distributed lease/lock manager (DLM) implementation. Use this if you want to implement a custom lease storage; otherwise, use an existing implementation library, e.g. DistributedLeaseManager.AzureBlobStorage.</Description>
+    <PackageTags>$(PackageTags)</PackageTags>
+  </PropertyGroup>
+</Project>
