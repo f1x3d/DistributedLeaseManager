@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DistributedLeaseManager.Cor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_misc", "_misc.csproj", "{FCA9041C-173C-47A0-AA96-5D26A0E0EE05}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DistributedLeaseManager.AzureBlobStorage", "DistributedLeaseManager.AzureBlobStorage\DistributedLeaseManager.AzureBlobStorage.csproj", "{C99AC90A-8896-4D4B-840A-1A817F8A4677}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DistributedLeaseManager.AzureBlobStorage", "DistributedLeaseManager.AzureBlobStorage\DistributedLeaseManager.AzureBlobStorage.csproj", "{C99AC90A-8896-4D4B-840A-1A817F8A4677}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DistributedLeaseManager.Example", "DistributedLeaseManager.Example\DistributedLeaseManager.Example.csproj", "{13B971B6-0B24-4458-85C5-F0A97582140C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DistributedLeaseManager.Example", "DistributedLeaseManager.Example\DistributedLeaseManager.Example.csproj", "{13B971B6-0B24-4458-85C5-F0A97582140C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DistributedLeaseManager.AzureCosmosDb", "DistributedLeaseManager.AzureCosmosDb\DistributedLeaseManager.AzureCosmosDb.csproj", "{A0E48760-C138-41EF-B1D3-FF65BBEFA276}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{13B971B6-0B24-4458-85C5-F0A97582140C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13B971B6-0B24-4458-85C5-F0A97582140C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{13B971B6-0B24-4458-85C5-F0A97582140C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0E48760-C138-41EF-B1D3-FF65BBEFA276}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0E48760-C138-41EF-B1D3-FF65BBEFA276}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0E48760-C138-41EF-B1D3-FF65BBEFA276}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0E48760-C138-41EF-B1D3-FF65BBEFA276}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

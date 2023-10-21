@@ -7,5 +7,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DistributedLeaseManager.AzureBlobStorage\DistributedLeaseManager.AzureBlobStorage.csproj" />
+    <ProjectReference Include="..\DistributedLeaseManager.AzureCosmosDb\DistributedLeaseManager.AzureCosmosDb.csproj" />
   </ItemGroup>
 </Project>
