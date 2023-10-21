@@ -2,7 +2,8 @@
 
 [![NuGet](https://img.shields.io/nuget/v/DistributedLeaseManager.Core?label=DistributedLeaseManager.Core)](https://nuget.org/packages/DistributedLeaseManager.Core)\
 [![NuGet](https://img.shields.io/nuget/v/DistributedLeaseManager.AzureBlobStorage?label=DistributedLeaseManager.AzureBlobStorage)](https://nuget.org/packages/DistributedLeaseManager.AzureBlobStorage)\
-[![NuGet](https://img.shields.io/nuget/v/DistributedLeaseManager.AzureCosmosDb?label=DistributedLeaseManager.AzureCosmosDb)](https://nuget.org/packages/DistributedLeaseManager.AzureCosmosDb)
+[![NuGet](https://img.shields.io/nuget/v/DistributedLeaseManager.AzureCosmosDb?label=DistributedLeaseManager.AzureCosmosDb)](https://nuget.org/packages/DistributedLeaseManager.AzureCosmosDb)\
+[![NuGet](https://img.shields.io/nuget/v/DistributedLeaseManager.EntityFrameworkCore?label=DistributedLeaseManager.EntityFrameworkCore)](https://nuget.org/packages/DistributedLeaseManager.EntityFrameworkCore)
 
 ## Description
 
@@ -15,6 +16,7 @@ Inspired by the https://github.com/fbeltrao/azfunctions-distributed-locking
 1. Install one of the lease storage implementations by following their README instructions:
 	* [Azure Blob Storage](./DistributedLeaseManager.AzureBlobStorage)
 	* [Azure Cosmos DB](./DistributedLeaseManager.AzureCosmosDb)
+	* [Entity Framework Core](./DistributedLeaseManager.EntityFrameworkCore) (any database provider supported by the EF Core)
 
 1. Inside your controller/service inject the `IDistributedLeaseManager` and call the `TryAcquireLease` method. Verify if the result was successful - if it was then you can proceed with the operation; otherwise, someone else has acquired the lease:
     ```csharp
