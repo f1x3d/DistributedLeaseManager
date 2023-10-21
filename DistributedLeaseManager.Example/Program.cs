@@ -5,7 +5,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 // The following example uses a local Azurite instance
 // See https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite
-builder.Services.AddDistributedLeaseManager("UseDevelopmentStorage=true", "distributed-leases");
+//builder.Services.AddDistributedLeaseManager("UseDevelopmentStorage=true", "distributed-leases");
+
+// The following example uses a local Azure Cosmos DB emulator
+// See https://learn.microsoft.com/en-us/azure/cosmos-db/emulator
+builder.Services.AddCosmosDbDistributedLeaseManager(
+    "AccountEndpoint=https://localhost:8081/;AccountKey=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==",
+    "DatabaseName",
+    "DistributedLeases");
 
 var app = builder.Build();
 
