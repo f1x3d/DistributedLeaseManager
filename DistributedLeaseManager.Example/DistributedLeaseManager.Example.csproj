@@ -6,7 +6,15 @@
     <None Remove="README.md" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.23" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.23">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\DistributedLeaseManager.AzureBlobStorage\DistributedLeaseManager.AzureBlobStorage.csproj" />
     <ProjectReference Include="..\DistributedLeaseManager.AzureCosmosDb\DistributedLeaseManager.AzureCosmosDb.csproj" />
+    <ProjectReference Include="..\DistributedLeaseManager.EntityFrameworkCore\DistributedLeaseManager.EntityFrameworkCore.csproj" />
   </ItemGroup>
 </Project>

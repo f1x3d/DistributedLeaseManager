@@ -1,5 +1,7 @@
+using System.Reflection;
 using System.Text;
 using DistributedLeaseManager.Core;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,14 +11,21 @@ var builder = WebApplication.CreateBuilder(args);
 
 // The following example uses a local Azure Cosmos DB emulator
 // See https://learn.microsoft.com/en-us/azure/cosmos-db/emulator
-builder.Services.AddCosmosDbDistributedLeaseManager(
-    "AccountEndpoint=https://localhost:8081/;AccountKey=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==",
-    "DatabaseName",
+//builder.Services.AddCosmosDbDistributedLeaseManager(
+//    "AccountEndpoint=https://localhost:8081/;AccountKey=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==",
+//    "DatabaseName",
+//    "DistributedLeases");
+
+// The following example uses a SQL Server Express LocalDB
+// See https://learn.microsoft.com/en-us/sql/database-engine/configure-windows/sql-server-express-localdb
+builder.Services.AddEfCoreDistributedLeaseManager(builder =>
+    builder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Integrated Security=true;Database=DatabaseName",
+        options => options.MigrationsAssembly(Assembly.GetExecutingAssembly().FullName)),
     "DistributedLeases");
 
 var app = builder.Build();
 
-app.MapGet("/distributed-leases", async (IDistributedLeaseManager leaseManager) =>
+app.MapGet("/distributed-leases", async (IServiceProvider serviceProvider) =>
 {
     const int parallelGroupSize = 5;
     var resourceId = Guid.NewGuid();
@@ -52,6 +61,8 @@ app.MapGet("/distributed-leases", async (IDistributedLeaseManager leaseManager) 
 
     async Task ProcessResource(Guid resourceId, int invocationNumber, bool simulateFail = false)
     {
+        await using var scope = serviceProvider.CreateAsyncScope();
+        var leaseManager = scope.ServiceProvider.GetRequiredService<IDistributedLeaseManager>();
         await using var leaseResult = await leaseManager.TryAcquireLease(resourceId, TimeSpan.FromSeconds(5));
 
         if (!leaseResult.IsSuccessful)
