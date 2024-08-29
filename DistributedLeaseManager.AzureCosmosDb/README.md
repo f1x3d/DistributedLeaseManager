@@ -16,12 +16,12 @@ This library contains a lease storage implemented using the Azure Cosmos DB.
 
 1. Register the Distributed Lease Manager in the DI container:
     ```csharp
-    builder.Services.AddCosmosDbDistributedLeaseManager("DatabaseName", "DistributedLeases", "/partitionKey");
+    builder.Services.AddCosmosDbDistributedLeaseManager("DatabaseName", "DistributedLeases");
     ```
 
     or specify the Cosmos DB connection string in case you skipped the first step:
     ```csharp
-    builder.Services.AddCosmosDbDistributedLeaseManager("ConnectionString", "DatabaseName", "DistributedLeases", "/partitionKey");
+    builder.Services.AddCosmosDbDistributedLeaseManager("ConnectionString", "DatabaseName", "DistributedLeases");
     ```
 
     or utilize one of the overloads that accepts an action in order to also customize the partition key path:
