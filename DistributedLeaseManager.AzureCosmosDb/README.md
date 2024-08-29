@@ -16,12 +16,12 @@ This library contains a lease storage implemented using the Azure Cosmos DB.
 
 1. Register the Distributed Lease Manager in the DI container:
     ```csharp
-    builder.Services.AddCosmosDbDistributedLeaseManager("DatabaseName", "DistributedLeases");
+    builder.Services.AddCosmosDbDistributedLeaseManager("DatabaseName", "DistributedLeases", "/partitionKey");
     ```
 
     or specify the Cosmos DB connection string in case you skipped the first step:
     ```csharp
-    builder.Services.AddCosmosDbDistributedLeaseManager("ConnectionString", "DatabaseName", "DistributedLeases");
+    builder.Services.AddCosmosDbDistributedLeaseManager("ConnectionString", "DatabaseName", "DistributedLeases", "/partitionKey");
     ```
  
 1. Inside your controller/service inject the `IDistributedLeaseManager` and call the `TryAcquireLease` method. Verify if the result was successful - if it was then you can proceed with the operation; otherwise, someone else has acquired the lease:

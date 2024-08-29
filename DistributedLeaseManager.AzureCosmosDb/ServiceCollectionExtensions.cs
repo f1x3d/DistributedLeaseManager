@@ -11,22 +11,30 @@ public static class ServiceCollectionExtensions
         this IServiceCollection services,
         string cosmosDbConnectionString,
         string databaseName,
-        string containerName)
+        string containerName,
+        string partitionKeyPath)
     {
         services.TryAddSingleton(new CosmosClient(cosmosDbConnectionString));
 
-        return services.AddCosmosDbDistributedLeaseManager(databaseName, containerName);
+        return services.AddCosmosDbDistributedLeaseManager(databaseName, containerName, partitionKeyPath);
     }
 
     public static IServiceCollection AddCosmosDbDistributedLeaseManager(
         this IServiceCollection services,
         string databaseName,
-        string containerName)
+        string containerName,
+        string partitionKeyPath)
     {
+        if (!partitionKeyPath.StartsWith("/"))
+        {
+            throw new ArgumentException("Must start with /.", nameof(partitionKeyPath));
+        }
+
         services.Configure<DistributedLeaseCosmosDbOptions>(options =>
         {
             options.DatabaseName = databaseName;
             options.ContainerName = containerName;
+            options.PartitionKeyPath = partitionKeyPath;
         });
 
         services.TryAddScoped<IDistributedLeaseRepository, DistributedLeaseCosmosDb>();
