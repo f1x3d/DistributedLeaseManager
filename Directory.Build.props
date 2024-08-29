@@ -13,7 +13,7 @@
 
 		<Version>1.1.0</Version>
 		<PackageValidationBaselineVersion>1.0.0</PackageValidationBaselineVersion>
-		<EnablePackageValidation Condition="'$(Version)' != '$(PackageValidationBaselineVersion)'">true</EnablePackageValidation>
+		<EnablePackageValidation Condition="'$(Version)' != '$(PackageValidationBaselineVersion)' And '$(IsPackable)' != 'false'">true</EnablePackageValidation>
 
 		<Authors>Oleksandr Manyk</Authors>
 		<PackageProjectUrl>https://github.com/f1x3d/DistributedLeaseManager</PackageProjectUrl>
