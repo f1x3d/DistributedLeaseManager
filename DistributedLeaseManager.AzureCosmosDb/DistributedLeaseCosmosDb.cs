@@ -1,8 +1,8 @@
-using System.Net;
 using DistributedLeaseManager.Core;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
+using System.Net;
 
 namespace DistributedLeaseManager.AzureCosmosDb;
 
@@ -10,6 +10,7 @@ public class DistributedLeaseCosmosDb : IDistributedLeaseRepository
 {
     private readonly CosmosClient _cosmosClient;
     private readonly DistributedLeaseCosmosDbOptions _options;
+    private readonly string _partitionKeyPropertyName;
 
     public DistributedLeaseCosmosDb(
         CosmosClient cosmosClient,
@@ -17,6 +18,7 @@ public class DistributedLeaseCosmosDb : IDistributedLeaseRepository
     {
         _cosmosClient = cosmosClient;
         _options = options.Value;
+        _partitionKeyPropertyName = _options.PartitionKeyPath[1..];
     }
 
     public async Task EnsureCreated()
@@ -25,25 +27,19 @@ public class DistributedLeaseCosmosDb : IDistributedLeaseRepository
 
         await _cosmosClient
             .GetDatabase(_options.DatabaseName)
-            .CreateContainerIfNotExistsAsync(_options.ContainerName, "/pk");
+            .CreateContainerIfNotExistsAsync(_options.ContainerName, _options.PartitionKeyPath);
     }
 
     public async Task<bool> Add(DistributedLease lease)
     {
-        var cosmosLease = new
-        {
-            id = lease.ResourceId.ToString(),
-            category = lease.ResourceCategory,
-            expirationTime = lease.ExpirationTime,
-            pk = GetPartitionKey(lease),
-        };
+        var cosmosLease = CreateLease(lease);
 
         try
         {
             await _cosmosClient
                 .GetDatabase(_options.DatabaseName)
                 .GetContainer(_options.ContainerName)
-                .CreateItemAsync(cosmosLease, new(cosmosLease.pk));
+                .CreateItemAsync(cosmosLease, new (GetPartitionKey(lease)));
 
             return true;
         }
@@ -80,20 +76,14 @@ public class DistributedLeaseCosmosDb : IDistributedLeaseRepository
 
     public async Task<bool> Update(DistributedLease lease)
     {
-        var cosmosLease = new
-        {
-            id = lease.ResourceId.ToString(),
-            category = lease.ResourceCategory,
-            expirationTime = lease.ExpirationTime,
-            pk = GetPartitionKey(lease),
-        };
+        var cosmosLease = CreateLease(lease);
 
         try
         {
             await _cosmosClient
                 .GetDatabase(_options.DatabaseName)
                 .GetContainer(_options.ContainerName)
-                .ReplaceItemAsync(cosmosLease, cosmosLease.id, new(cosmosLease.pk), new()
+                .ReplaceItemAsync(cosmosLease, cosmosLease["id"].ToString(), new(GetPartitionKey(lease)), new()
                 {
                     IfMatchEtag = lease.ETag
                 });
@@ -101,7 +91,7 @@ public class DistributedLeaseCosmosDb : IDistributedLeaseRepository
             return true;
         }
         catch (CosmosException ex)
-        when (ex.StatusCode == HttpStatusCode.PreconditionFailed)
+            when (ex.StatusCode == HttpStatusCode.PreconditionFailed)
         {
             return false;
         }
@@ -122,4 +112,18 @@ public class DistributedLeaseCosmosDb : IDistributedLeaseRepository
 
     private static string GetPartitionKey(string resourceCategory, Guid resourceId)
         => $"{resourceCategory}/{resourceId}";
+
+    private JObject CreateLease(DistributedLease lease) =>
+        CreateLease(lease.ResourceId, lease.ResourceCategory, lease.ExpirationTime, GetPartitionKey(lease));
+
+    private JObject CreateLease(Guid resourceId, string category, DateTimeOffset expirationTime, string partitionKey)
+    {
+        return new()
+        {
+            ["id"] = resourceId.ToString(),
+            ["category"] = category,
+            ["expirationTime"] = expirationTime,
+            [_partitionKeyPropertyName] = partitionKey,
+        };
+    }
 }

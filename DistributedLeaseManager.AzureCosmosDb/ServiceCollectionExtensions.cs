@@ -23,11 +23,28 @@ public static class ServiceCollectionExtensions
         string databaseName,
         string containerName)
     {
-        services.Configure<DistributedLeaseCosmosDbOptions>(options =>
+        return services.AddCosmosDbDistributedLeaseManager(options =>
         {
             options.DatabaseName = databaseName;
             options.ContainerName = containerName;
         });
+    }
+
+    public static IServiceCollection AddCosmosDbDistributedLeaseManager(
+        this IServiceCollection services,
+        string cosmosDbConnectionString,
+        Action<DistributedLeaseCosmosDbOptions> optionsConfiguration)
+    {
+        services.TryAddSingleton(new CosmosClient(cosmosDbConnectionString));
+
+        return services.AddCosmosDbDistributedLeaseManager(optionsConfiguration);
+    }
+
+    public static IServiceCollection AddCosmosDbDistributedLeaseManager(
+        this IServiceCollection services,
+        Action<DistributedLeaseCosmosDbOptions> optionsConfiguration)
+    {
+        services.Configure(optionsConfiguration);
 
         services.TryAddScoped<IDistributedLeaseRepository, DistributedLeaseCosmosDb>();
         services.TryAddScoped<IDistributedLeaseManager, DistributedLeaseManager.Core.DistributedLeaseManager>();

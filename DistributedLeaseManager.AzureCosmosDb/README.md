@@ -23,6 +23,19 @@ This library contains a lease storage implemented using the Azure Cosmos DB.
     ```csharp
     builder.Services.AddCosmosDbDistributedLeaseManager("ConnectionString", "DatabaseName", "DistributedLeases");
     ```
+
+    or utilize one of the overloads that accepts an action in order to also customize the partition key path:
+    ```csharp
+    builder.Services.AddCosmosDbDistributedLeaseManager(
+        "AccountEndpoint=https://localhost:8081/;AccountKey=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==",
+        options =>
+        {
+            options.DatabaseName = "DatabaseName";
+            options.ContainerName = "DistributedLeases";
+            options.PartitionKeyPath = "/partitionKey";
+        }); 
+    ```
+   Note: Partition Key Path must start with `/`. Nested partition key paths such as `/my/partitionKey` are not supported.
  
 1. Inside your controller/service inject the `IDistributedLeaseManager` and call the `TryAcquireLease` method. Verify if the result was successful - if it was then you can proceed with the operation; otherwise, someone else has acquired the lease:
     ```csharp
