@@ -11,31 +11,40 @@ public static class ServiceCollectionExtensions
         this IServiceCollection services,
         string cosmosDbConnectionString,
         string databaseName,
-        string containerName,
-        string partitionKeyPath)
+        string containerName)
     {
         services.TryAddSingleton(new CosmosClient(cosmosDbConnectionString));
 
-        return services.AddCosmosDbDistributedLeaseManager(databaseName, containerName, partitionKeyPath);
+        return services.AddCosmosDbDistributedLeaseManager(databaseName, containerName);
     }
 
     public static IServiceCollection AddCosmosDbDistributedLeaseManager(
         this IServiceCollection services,
         string databaseName,
-        string containerName,
-        string partitionKeyPath)
+        string containerName)
     {
-        if (!partitionKeyPath.StartsWith("/"))
-        {
-            throw new ArgumentException("Must start with /.", nameof(partitionKeyPath));
-        }
-
-        services.Configure<DistributedLeaseCosmosDbOptions>(options =>
+        return services.AddCosmosDbDistributedLeaseManager(options =>
         {
             options.DatabaseName = databaseName;
             options.ContainerName = containerName;
-            options.PartitionKeyPath = partitionKeyPath;
         });
+    }
+
+    public static IServiceCollection AddCosmosDbDistributedLeaseManager(
+        this IServiceCollection services,
+        string cosmosDbConnectionString,
+        Action<DistributedLeaseCosmosDbOptions> optionsConfiguration)
+    {
+        services.TryAddSingleton(new CosmosClient(cosmosDbConnectionString));
+
+        return services.AddCosmosDbDistributedLeaseManager(optionsConfiguration);
+    }
+
+    public static IServiceCollection AddCosmosDbDistributedLeaseManager(
+        this IServiceCollection services,
+        Action<DistributedLeaseCosmosDbOptions> optionsConfiguration)
+    {
+        services.Configure(optionsConfiguration);
 
         services.TryAddScoped<IDistributedLeaseRepository, DistributedLeaseCosmosDb>();
         services.TryAddScoped<IDistributedLeaseManager, DistributedLeaseManager.Core.DistributedLeaseManager>();

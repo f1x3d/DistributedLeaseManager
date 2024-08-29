@@ -13,8 +13,12 @@ var builder = WebApplication.CreateBuilder(args);
 // See https://learn.microsoft.com/en-us/azure/cosmos-db/emulator
 //builder.Services.AddCosmosDbDistributedLeaseManager(
 //    "AccountEndpoint=https://localhost:8081/;AccountKey=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==",
-//    "DatabaseName",
-//    "DistributedLeases");
+//    options =>
+//    {
+//        options.DatabaseName = "DatabaseName";
+//        options.ContainerName = "DistributedLeases";
+//        options.PartitionKeyPath = "/partitionKey";
+//    });
 
 // The following example uses a SQL Server Express LocalDB
 // See https://learn.microsoft.com/en-us/sql/database-engine/configure-windows/sql-server-express-localdb
