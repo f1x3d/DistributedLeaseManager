@@ -10,12 +10,11 @@ public class DistributedLeaseManager : IDistributedLeaseManager
             ?? throw new ArgumentNullException(nameof(repository));
     }
 
-    public Task<IDistributedLeaseAcquisitionResult> TryAcquireLease(Guid resourceId, TimeSpan duration)
+    public Task<IDistributedLeaseAcquisitionResult> TryAcquireLease(string resourceId, TimeSpan duration)
         => TryAcquireLease(DistributedLease.DefaultResourceCategory, resourceId, duration);
 
-    public async Task<IDistributedLeaseAcquisitionResult> TryAcquireLease(
-        string resourceCategory,
-        Guid resourceId,
+    public async Task<IDistributedLeaseAcquisitionResult> TryAcquireLease(string resourceCategory,
+        string resourceId,
         TimeSpan duration)
     {
         await _repository.EnsureCreated();

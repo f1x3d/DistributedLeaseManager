@@ -47,7 +47,7 @@ public class DistributedLeaseBlobStorage : IDistributedLeaseRepository
         }
     }
 
-    public async Task<DistributedLease?> Find(string resourceCategory, Guid resourceId)
+    public async Task<DistributedLease?> Find(string resourceCategory, string resourceId)
     {
         using var blobStream = new MemoryStream();
 
@@ -111,6 +111,6 @@ public class DistributedLeaseBlobStorage : IDistributedLeaseRepository
     private static string GetBlobPath(DistributedLease lease)
         => GetBlobPath(lease.ResourceCategory, lease.ResourceId);
 
-    private static string GetBlobPath(string resourceCategory, Guid resourceId)
+    private static string GetBlobPath(string resourceCategory, string resourceId)
         => $"{resourceCategory}/{resourceId}.json";
 }
