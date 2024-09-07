@@ -29,6 +29,10 @@ public class DistributedLeaseConfiguration : IEntityTypeConfiguration<Distribute
             .HasMaxLength(255);
 
         builder
+            .Property(x => x.ResourceId)
+            .HasMaxLength(255);
+
+        builder
             .Property(x => x.ETag)
             .HasMaxLength(36);
 

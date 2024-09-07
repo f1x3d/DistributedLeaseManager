@@ -50,18 +50,18 @@ public class DistributedLeaseCosmosDb : IDistributedLeaseRepository
         }
     }
 
-    public async Task<DistributedLease?> Find(string resourceCategory, Guid resourceId)
+    public async Task<DistributedLease?> Find(string resourceCategory, string resourceId)
     {
         try
         {
             var response = await _cosmosClient
                 .GetDatabase(_options.DatabaseName)
                 .GetContainer(_options.ContainerName)
-                .ReadItemAsync<JObject>(resourceId.ToString(), new(GetPartitionKey(resourceCategory, resourceId)));
+                .ReadItemAsync<JObject>(resourceId, new(GetPartitionKey(resourceCategory, resourceId)));
 
             return new()
             {
-                ResourceId = response.Resource["id"].ToObject<Guid>(),
+                ResourceId = response.Resource["id"].ToObject<string>(),
                 ResourceCategory = response.Resource["category"].ToObject<string>(),
                 ExpirationTime = response.Resource["expirationTime"].ToObject<DateTimeOffset>(),
                 ETag = response.ETag,
@@ -102,7 +102,7 @@ public class DistributedLeaseCosmosDb : IDistributedLeaseRepository
         await _cosmosClient
             .GetDatabase(_options.DatabaseName)
             .GetContainer(_options.ContainerName)
-            .DeleteItemAsync<JObject>(lease.ResourceId.ToString(), new(GetPartitionKey(lease)));
+            .DeleteItemAsync<JObject>(lease.ResourceId, new(GetPartitionKey(lease)));
 
         return true;
     }
@@ -110,17 +110,17 @@ public class DistributedLeaseCosmosDb : IDistributedLeaseRepository
     private static string GetPartitionKey(DistributedLease lease)
         => GetPartitionKey(lease.ResourceCategory, lease.ResourceId);
 
-    private static string GetPartitionKey(string resourceCategory, Guid resourceId)
+    private static string GetPartitionKey(string resourceCategory, string resourceId)
         => $"{resourceCategory}/{resourceId}";
 
     private JObject CreateLease(DistributedLease lease) =>
         CreateLease(lease.ResourceId, lease.ResourceCategory, lease.ExpirationTime, GetPartitionKey(lease));
 
-    private JObject CreateLease(Guid resourceId, string category, DateTimeOffset expirationTime, string partitionKey)
+    private JObject CreateLease(string resourceId, string category, DateTimeOffset expirationTime, string partitionKey)
     {
         return new()
         {
-            ["id"] = resourceId.ToString(),
+            ["id"] = resourceId,
             ["category"] = category,
             ["expirationTime"] = expirationTime,
             [_partitionKeyPropertyName] = partitionKey,

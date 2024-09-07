@@ -1,13 +1,15 @@
 using System.Reflection;
 using System.Text;
 using DistributedLeaseManager.Core;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // The following example uses a local Azurite instance
 // See https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite
-//builder.Services.AddDistributedLeaseManager("UseDevelopmentStorage=true", "distributed-leases");
+//builder.Services.AddBlobStorageDistributedLeaseManager("UseDevelopmentStorage=true", "distributed-leases");
 
 // The following example uses a local Azure Cosmos DB emulator
 // See https://learn.microsoft.com/en-us/azure/cosmos-db/emulator
@@ -29,10 +31,18 @@ builder.Services.AddEfCoreDistributedLeaseManager(builder =>
 
 var app = builder.Build();
 
+app.MapGet("/distributed-leases/{category}/{resourceId}", async ([FromServices] IDistributedLeaseManager leaseManager,
+    string category,
+    string resourceId) =>
+{
+    var leaseResult = await leaseManager.TryAcquireLease(category, resourceId, TimeSpan.FromMinutes(1));
+    return JsonConvert.SerializeObject(leaseResult);
+});
+
 app.MapGet("/distributed-leases", async (IServiceProvider serviceProvider) =>
 {
     const int parallelGroupSize = 5;
-    var resourceId = Guid.NewGuid();
+    var resourceId = Guid.NewGuid().ToString();
     var result = new StringBuilder();
     var lockObject = new object();
 
@@ -63,7 +73,7 @@ app.MapGet("/distributed-leases", async (IServiceProvider serviceProvider) =>
 
     return result.ToString();
 
-    async Task ProcessResource(Guid resourceId, int invocationNumber, bool simulateFail = false)
+    async Task ProcessResource(string resourceId, int invocationNumber, bool simulateFail = false)
     {
         await using var scope = serviceProvider.CreateAsyncScope();
         var leaseManager = scope.ServiceProvider.GetRequiredService<IDistributedLeaseManager>();

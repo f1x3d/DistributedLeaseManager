@@ -11,8 +11,8 @@
 		<PackageId>$(AssemblyName)</PackageId>
 		<PackageTags>distributed lease lock manager dlm concurrency aspnet</PackageTags>
 
-		<Version>1.1.0</Version>
-		<PackageValidationBaselineVersion>1.0.0</PackageValidationBaselineVersion>
+		<Version>2.0.0</Version>
+		<PackageValidationBaselineVersion>2.0.0</PackageValidationBaselineVersion>
 
 		<Authors>Oleksandr Manyk</Authors>
 		<PackageProjectUrl>https://github.com/f1x3d/DistributedLeaseManager</PackageProjectUrl>

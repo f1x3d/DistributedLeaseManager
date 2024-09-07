@@ -31,7 +31,7 @@ public class DistributedLeaseEfCore : IDistributedLeaseRepository
         }
     }
 
-    public Task<DistributedLease?> Find(string resourceCategory, Guid resourceId)
+    public Task<DistributedLease?> Find(string resourceCategory, string resourceId)
         => _dbContext.Leases.FirstOrDefaultAsync(x =>
             x.ResourceCategory == resourceCategory &&
             x.ResourceId == resourceId);
