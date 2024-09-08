@@ -1,9 +1,11 @@
 ﻿# DistributedLeaseManager
 
-[![NuGet](https://img.shields.io/nuget/v/DistributedLeaseManager.Core?label=DistributedLeaseManager.Core)](https://nuget.org/packages/DistributedLeaseManager.Core)\
-[![NuGet](https://img.shields.io/nuget/v/DistributedLeaseManager.AzureBlobStorage?label=DistributedLeaseManager.AzureBlobStorage)](https://nuget.org/packages/DistributedLeaseManager.AzureBlobStorage)\
-[![NuGet](https://img.shields.io/nuget/v/DistributedLeaseManager.AzureCosmosDb?label=DistributedLeaseManager.AzureCosmosDb)](https://nuget.org/packages/DistributedLeaseManager.AzureCosmosDb)\
-[![NuGet](https://img.shields.io/nuget/v/DistributedLeaseManager.EntityFrameworkCore?label=DistributedLeaseManager.EntityFrameworkCore)](https://nuget.org/packages/DistributedLeaseManager.EntityFrameworkCore)
+## NuGet packages
+
+[![NuGet](https://img.shields.io/nuget/v/DistributedLeaseManager.Core?logo=nuget&label=DistributedLeaseManager.Core)](https://nuget.org/packages/DistributedLeaseManager.Core)\
+[![NuGet](https://img.shields.io/nuget/v/DistributedLeaseManager.AzureBlobStorage?logo=nuget&label=DistributedLeaseManager.AzureBlobStorage)](https://nuget.org/packages/DistributedLeaseManager.AzureBlobStorage)\
+[![NuGet](https://img.shields.io/nuget/v/DistributedLeaseManager.AzureCosmosDb?logo=nuget&label=DistributedLeaseManager.AzureCosmosDb)](https://nuget.org/packages/DistributedLeaseManager.AzureCosmosDb)\
+[![NuGet](https://img.shields.io/nuget/v/DistributedLeaseManager.EntityFrameworkCore?logo=nuget&label=DistributedLeaseManager.EntityFrameworkCore)](https://nuget.org/packages/DistributedLeaseManager.EntityFrameworkCore)
 
 ## Description
 
