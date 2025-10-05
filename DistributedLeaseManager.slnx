@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="DistributedLeaseManager.AzureBlobStorage/DistributedLeaseManager.AzureBlobStorage.csproj" />
+  <Project Path="DistributedLeaseManager.AzureCosmosDb/DistributedLeaseManager.AzureCosmosDb.csproj" />
+  <Project Path="DistributedLeaseManager.Core/DistributedLeaseManager.Core.csproj" />
+  <Project Path="DistributedLeaseManager.EntityFrameworkCore/DistributedLeaseManager.EntityFrameworkCore.csproj" />
+  <Project Path="DistributedLeaseManager.Example/DistributedLeaseManager.Example.csproj" />
+  <Project Path="_misc.csproj" />
+</Solution>
